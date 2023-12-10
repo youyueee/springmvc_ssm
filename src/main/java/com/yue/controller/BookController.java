@@ -1,6 +1,8 @@
 package com.yue.controller;
 
 import com.yue.domain.Book;
+import com.yue.exception.BusinessException;
+import com.yue.exception.SystemException;
 import com.yue.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,15 @@ public class BookController {
     }
     @GetMapping("/{id}")
     public Result getById(@PathVariable Integer id) {
+        if(id==1){
+            throw new BusinessException(Code.BUSINESS_ERR,"...EXCEPTION");
+        }
+        try {
+            int i=1/0;
+        }catch (Exception e){
+            throw new SystemException(Code.SYSTEM_ERR,"服务器超时",e);
+        }
+
         Book book=bookService.getById(id);
         Integer code=book!=null?Code.GET_OK:Code.GET_ERR;
         String msg=book!=null?" ":"查询失败";
